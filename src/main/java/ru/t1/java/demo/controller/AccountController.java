@@ -25,15 +25,16 @@ public class AccountController {
     public List<Account> getAccounts() {
         return accountService.findAllAccounts();
     }
+
     @GetMapping("/slow-acc")
-    public ResponseEntity getAccountsSlow() throws InterruptedException {
+    public ResponseEntity<?> getAccountsSlow() throws InterruptedException {
         Thread.sleep(300);
         return ResponseEntity.ok().build();
     }
     @PostMapping("/kafka")
-    public String sendAccount(@RequestBody AccountDto account) {
+    public ResponseEntity<?> sendAccount(@RequestBody AccountDto account) {
         accountProducer.send(account);
-        return "Account отправлен в Kafka!";
+        return ResponseEntity.ok("Account отправлен в Kafka!");
     }
 
     @PostMapping

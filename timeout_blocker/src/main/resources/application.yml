@@ -5,6 +5,7 @@ spring:
     bootstrap-servers: localhost:29092,localhost:39092,localhost:49092
     streams:
       application-id: transaction-stream-app
+      bootstrap-servers: localhost:29092,localhost:39092,localhost:49092
       properties:
         default:
           key:

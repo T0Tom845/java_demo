@@ -28,6 +28,7 @@ dependencies {
 	implementation("org.springframework.kafka:spring-kafka:3.3.2")
 	implementation("org.apache.kafka:kafka-streams:3.9.0")
 	implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.3")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

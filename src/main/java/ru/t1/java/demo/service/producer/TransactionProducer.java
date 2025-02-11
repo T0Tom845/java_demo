@@ -6,8 +6,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.t1.java.demo.dto.AcceptedTransactionMessage;
 import ru.t1.java.demo.dto.TransactionDto;
-import ru.t1.java.demo.model.Transaction;
-import ru.t1.java.demo.util.TransactionMapper;
 
 import java.util.UUID;
 
@@ -17,18 +15,22 @@ import java.util.UUID;
 public class TransactionProducer {
     private final KafkaTemplate<String, TransactionDto> kafkaTemplate;
     private final KafkaTemplate<String, AcceptedTransactionMessage> acceptedKafkaTemplate;
-    private final TransactionMapper transactionMapper;
 
     public void send(TransactionDto transaction) {
         String key = UUID.randomUUID().toString();
-        log.info("Sending transaction {}", transaction.toString());
-        kafkaTemplate.send("t1_demo_transactions", key, transaction);
+        kafkaTemplate.sendDefault(key, transaction).whenComplete((result, exception) -> {
+            if (exception == null) {
+                log.info("Сообщение успешно отправлено: {}", result.toString());
+
+            }else
+                log.error("Ошибка при отправке сообщения: {}", exception.getMessage());
+        });
     }
 
     //Отправляет сообщение в топик t1_demo_transaction_accept с информацией
     // {clientId, accountId, transactionId, timestamp, transaction.amount, account.balance}
     public void sendTransactionAccept(AcceptedTransactionMessage transaction) {
         String key = UUID.randomUUID().toString();
-        acceptedKafkaTemplate.send("t1_demo_transactions_accept", key, transaction);
+        acceptedKafkaTemplate.send("t1_demo_transaction_accept", key, transaction);
     }
 }

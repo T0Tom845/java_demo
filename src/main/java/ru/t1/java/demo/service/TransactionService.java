@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.t1.java.demo.dto.AcceptedTransactionMessage;
 import ru.t1.java.demo.dto.IncomingResultTransactionDto;
-import ru.t1.java.demo.dto.IncomingTransactionDto;
 import ru.t1.java.demo.dto.TransactionDto;
 import ru.t1.java.demo.model.Account;
 import ru.t1.java.demo.model.Transaction;
@@ -42,8 +41,8 @@ public class TransactionService {
     }
 
     @Transactional
-    public void processTransaction(IncomingTransactionDto incomingTransactionDto) {
-        Transaction transaction = transactionMapper.toEntity(incomingTransactionDto);
+    public void processTransaction(TransactionDto transactionDto) {
+        Transaction transaction = transactionMapper.toEntity(transactionDto);
         log.info("Transaction timestamp {}", transaction.getTimestamp());
         Account account = transaction.getAccount();
         log.info("Transaction account is {}", account.getId());
@@ -66,6 +65,7 @@ public class TransactionService {
         }
     }
 
+    @Transactional
     public void processTransactionResult(IncomingResultTransactionDto transactionDto) {
         Transaction transaction = transactionRepository.getReferenceById(transactionDto.transactionId());
         switch (transaction.getStatus()) {

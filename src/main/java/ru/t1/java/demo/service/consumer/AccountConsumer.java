@@ -1,31 +1,19 @@
 package ru.t1.java.demo.service.consumer;
 
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
-
 import org.springframework.stereotype.Component;
-import ru.t1.java.demo.dto.AccountDto;
-import ru.t1.java.demo.service.AccountService;
-
+import ru.t1.java.demo.dto.TransactionDto;
 
 @Component
-@RequiredArgsConstructor
+@Slf4j
 public class AccountConsumer {
-    ObjectMapper objectMapper = new ObjectMapper();
-    private final AccountService accountService;
 
-
-    @KafkaListener(topics = "t1_demo_accounts", groupId = "account-consumer")
-    public void handle(String str) {
-        System.out.println("Received account " + str);
-        try {
-            AccountDto accountDto = objectMapper.readValue(str, AccountDto.class);
-            accountService.saveAccount(accountDto);
-        } catch (Exception e) {
-            System.out.println("Error: " + e);
-        }
-
+    @KafkaListener(topics = "t1_demo_accounts", groupId = "account-consumer", containerFactory = "accountKafkaListenerContainerFactory")
+    public void listenAccountTopic(ConsumerRecord<String, TransactionDto> record) {
+        log.info("Received account {}", record.toString());
     }
+
 }
