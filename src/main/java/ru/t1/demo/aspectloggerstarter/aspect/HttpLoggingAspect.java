@@ -28,16 +28,6 @@ public class HttpLoggingAspect {
             logger.info("Method: {}", joinPoint.getSignature().toShortString());
             logger.info("Arguments: {}", Arrays.toString(joinPoint.getArgs()));
         }
-        if (("DEBUG").equals(properties.getLevel())){
-            logger.debug("=== HTTP REQUEST START ===");
-            logger.debug("Method: {}", joinPoint.getSignature().toShortString());
-            logger.debug("Arguments: {}", Arrays.toString(joinPoint.getArgs()));
-        }
-        if (("ERROR").equals(properties.getLevel())){
-            logger.error("=== HTTP REQUEST START ===");
-            logger.error("Method: {}", joinPoint.getSignature().toShortString());
-            logger.error("Arguments: {}", Arrays.toString(joinPoint.getArgs()));
-        }
     }
 
     @AfterThrowing(pointcut = "pointcut()", throwing = "exception")

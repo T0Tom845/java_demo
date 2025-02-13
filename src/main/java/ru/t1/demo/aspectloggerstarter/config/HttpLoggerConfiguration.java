@@ -10,10 +10,10 @@ import ru.t1.demo.aspectloggerstarter.aspect.HttpLoggingAspect;
 @Configuration
 @EnableConfigurationProperties(HttpLoggingProperties.class)
 @EnableAspectJAutoProxy
-@ConditionalOnProperty(name = "enabled", havingValue = "true", matchIfMissing = true)
 public class HttpLoggerConfiguration {
 
     @Bean
+    @ConditionalOnProperty(name = "enabled", havingValue = "true", matchIfMissing = true)
     public HttpLoggingAspect httpLoggingAspect(HttpLoggingProperties properties) {
         return new HttpLoggingAspect(properties);
     }
