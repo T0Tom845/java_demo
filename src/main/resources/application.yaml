@@ -1,0 +1,3 @@
+http-logger-starter:
+  enabled: true
+  level: INFO
